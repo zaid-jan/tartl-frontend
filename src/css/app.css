@@ -1,0 +1,10 @@
+.app {
+  position: relative; 
+  overflow-x: hidden;   
+}
+
+.outerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
