@@ -27,7 +27,8 @@ const ViewAppointment = (props) => {
                     on: {date.format('YYYY-MM-DD')}<br />
                     at: {date.format('hh:mm:ss')} <br />
                 </Card.Text>
-                <Card.Link href="#" onClick={handleClick}>Edit Appointment</Card.Link>
+                { props.user.id === item.uid ? <Card.Link href="#" onClick={handleClick}>Edit Appointment</Card.Link> : <div></div> }
+                
             </Card.Body>
             </Card>
         </div>
@@ -36,7 +37,8 @@ const ViewAppointment = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        data: state.appointments
+        data: state.appointments,
+        user: state.user
     }
 }
 

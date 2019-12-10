@@ -66,6 +66,7 @@ const EditAppointment = (props) => {
                 onChange={input => handleNew(input)}
                 options={suggestions}
                 placeholder={"Set Appointment With"}
+                selected={[aWith]}
               />
             </Form.Group>
             <Form.Group controlId="aWhen" bsSize="large">
@@ -93,7 +94,8 @@ const EditAppointment = (props) => {
 const mapStateToProps = (state) => {
     return {
         data: state.appointments,
-        socket: state.socket
+        socket: state.socket,
+        otherUsers: state.otherUsers
     }
 }
 
