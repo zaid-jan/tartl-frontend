@@ -12,6 +12,6 @@ export const redirectHome = async (res, history, username, addAppointment, addRe
             })        
         history.push("/home");
     } else {
-        alert('bhag')
+        alert('somwthing went wrong')
     }
 }
