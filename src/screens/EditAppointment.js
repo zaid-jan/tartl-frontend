@@ -20,14 +20,19 @@ const EditAppointment = (props) => {
     const item = findItem(props.data, 'aid', id)
     let [aid, setAid] = useState(item.aid)
     let [uid, setUid] = useState(item.uid)
-    let [aWith, setAWith] = useState(item.aWith)
+    let [awith, setawith] = useState(item.awith)
     let [subject, setSubject] = useState(item.subject)
-    let [aWhen, setAWhen] = useState(item.aWhen)
+    let [awhen, setAWhen] = useState(item.awhen)
     let [isNew, setIsNew] = useState(0)
-    console.log("aWhen", Date.parse(aWhen))
+    console.log("awhen", Date.parse(awhen))
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-        props.socket.emit(`editAppointment`, {aid, uid, aWith, subject, aWhen})
+        let auid = '';
+        if(!isNew){
+          auid = props.otherUsers.find(item => item.username === awith).id
+        }
+        props.socket.emit(`editAppointment`, {aid, uid, awith, subject, awhen, auid})
         history.goBack()     
     }
     const handleNew = (input) => {
@@ -35,13 +40,13 @@ const EditAppointment = (props) => {
       if(input.length){
         if(input[0].hasOwnProperty("label")){
           setIsNew(1)
-          setAWith(input[0].label)
+          setawith(input[0].label)
         } else {
           setIsNew(0)
-          setAWith(input[0])
+          setawith(input[0])
         }
       } else {
-        setAWith("")
+        setawith("")
         setIsNew(0)
       }
     }
@@ -60,19 +65,19 @@ const EditAppointment = (props) => {
                 placeholder="subject"
               />
             </Form.Group>
-            <Form.Group controlId="aWith" bsSize="large">
+            <Form.Group controlId="awith" bsSize="large">
             <Typeahead
                 allowNew
                 onChange={input => handleNew(input)}
                 options={suggestions}
                 placeholder={"Set Appointment With"}
-                selected={[aWith]}
+                selected={[awith]}
               />
             </Form.Group>
-            <Form.Group controlId="aWhen" bsSize="large">
+            <Form.Group controlId="awhen" bsSize="large">
             <DatePicker
                 className="form-control"
-                selected={Date.parse(aWhen)}
+                selected={Date.parse(awhen)}
                 onChange={(date) => {setAWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect
                 dateFormat="Pp"

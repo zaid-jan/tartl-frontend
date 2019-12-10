@@ -10,8 +10,8 @@ export default (state=initialState, action) => {
             return state.map(item => {                
                 if(item.aid === action.payload.aid){
                     item.subject = action.payload.subject
-                    item.aWhen = action.payload.aWhen
-                    item.aWith = action.payload.aWith
+                    item.awhen = action.payload.awhen
+                    item.awith = action.payload.awith
                 }
                 return item
             })

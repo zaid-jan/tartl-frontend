@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Navbar, Dropdown } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { FaBell } from 'react-icons/fa'
-import { FaUser } from 'react-icons/fa'
-import { useHistory } from 'react-router-dom'
+import { FaBell, FaUser, FaCalendar} from 'react-icons/fa'
+import { MdAlarm } from 'react-icons/md'
+import { useHistory, useLocation } from 'react-router-dom'
 import { addAppointment } from '../actions/addAppointment'
 import { getNotifications } from '../lib/getNotifications'
 import { addNotification } from '../actions/addNotification'
@@ -11,18 +11,32 @@ import { addNotification } from '../actions/addNotification'
 const CustomNavbar = (props) => { 
     useEffect(() => {
         props.addNotification(getNotifications( props.appointments, props.reminders ), 'setNotifications')
-    }, [props.reminders, props.appointments])
+    }, [props.appointments, props.reminders])
     let history = useHistory()
+    let location = useLocation()
+    console.log("location",)
+    const handleNotifications = (e, item) => {
+        e.preventDefault()
+        if(location.pathname !== '/home'){
+            location.pathname = '/home'
+        }
+        if(item.hasOwnProperty('rid')){
+            history.push(`viewReminder/${item.rid}`)
+        } else {
+            history.push(`viewAppointment/${item.aid}`)
+        }
+    }
+    
     const handleOtherUsers = (e) => {
         e.preventDefault();
         const id = e.target.id;
-        console.log("e.target", e.target)
+        // console.log("e.target", e.target)
         history.push(`/availability/${id}`)
     }
     
     
-    let notifications = props.notifications.map(item => <Dropdown.Item href="#" >{item.subject}</Dropdown.Item>)
-    let otherUsers = props.otherUsers.map(item => <Dropdown.Item href="#" id={item.id} onClick={handleOtherUsers}>{item.username}</Dropdown.Item>)
+let notifications = props.notifications.map(item => <Dropdown.Item href="#"  onClick={(e) => handleNotifications(e, item)}>{item.rid ? <span className="topIcon"><MdAlarm/></span>: <span className="topIcon"><FaCalendar /></span>}{item.subject}</Dropdown.Item>)
+    let otherUsers = props.otherUsers.map(item => <Dropdown.Item href="#"  id={item.id} onClick={handleOtherUsers}>{item.username}</Dropdown.Item>)
     return (
         <Navbar>
         <Navbar.Brand onClick={() => {history.push('/home')}}>tartl-task</Navbar.Brand>

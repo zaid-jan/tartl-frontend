@@ -21,12 +21,12 @@ const EditReminder = (props) => {
     let [uid, setUid] = useState(item.uid)
     let [description, setdescription] = useState(item.description)
     let [subject, setSubject] = useState(item.subject)
-    let [rWhen, setrWhen] = useState(item.rWhen)
+    let [rwhen, setrwhen] = useState(item.rwhen)
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let res = await axios.post(`${env.backend}/editReminder`, {rid, uid, description, subject, rWhen})
+        let res = await axios.post(`${env.backend}/editReminder`, {rid, uid, description, subject, rwhen})
         if(!res.data.error){
-          props.addReminder({rid, uid, description, subject, rWhen}, 'editReminder')
+          props.addReminder({rid, uid, description, subject, rwhen}, 'editReminder')
         }
         history.goBack()
     }
@@ -52,11 +52,11 @@ const EditReminder = (props) => {
                 placeholder="Reminder With?"
               />
             </Form.Group>
-            <Form.Group controlId="rWhen" bsSize="large">
+            <Form.Group controlId="rwhen" bsSize="large">
             <DatePicker
                 className="form-control"
-                selected={Date.parse(rWhen)}
-                onChange={(date) => {setrWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
+                selected={Date.parse(rwhen)}
+                onChange={(date) => {setrwhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect
                 dateFormat="Pp"
             />

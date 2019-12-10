@@ -10,7 +10,7 @@ const ViewAppointment = (props) => {
     let history = useHistory()
     const { id } = useParams()  
     const item = findItem(props.data, 'aid', id);
-    const date = convertDbTime(item.aWhen);   
+    const date = convertDbTime(item.awhen);   
     const handleClick = (e) => {
         e.preventDefault()
         history.push(`/editAppointment/${id}`)
@@ -23,11 +23,11 @@ const ViewAppointment = (props) => {
                 <Card.Title>Appointment</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{item.subject}</Card.Subtitle>
                 <Card.Text>
-                    with: {item.aWith} <br />
+                    with: {item.awith} <br />
                     on: {date.format('YYYY-MM-DD')}<br />
                     at: {date.format('hh:mm:ss')} <br />
                 </Card.Text>
-                { props.user.id === item.uid ? <Card.Link href="#" onClick={handleClick}>Edit Appointment</Card.Link> : <div></div> }
+                { props.user.id === item.uid ? <Card.Link href="#" onClick={handleClick}>Edit Appointment</Card.Link> : <div><hr />Appointment created by someone Else, You dont have edit rights.</div> }
                 
             </Card.Body>
             </Card>

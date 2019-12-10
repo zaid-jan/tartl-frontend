@@ -25,7 +25,7 @@ const AllRoutes = (props) => {
     if(loggedIn && !setUp){
         setSetUp(1);
         console.log("setUp", setUp)
-        const socket = io(`http://localhost:8000?id=${props.user.id}`, {transports: ['websocket']});
+        const socket = io(`${env.backend}?id=${props.user.id}`, {transports: ['websocket']});
         listenerWrapper(socket, props.addAppointment)
         props.addSocket(socket, 'setSocket')
         axios.post(`${env.backend}/getUsers`, {id: props.user.id})

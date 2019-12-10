@@ -1,4 +1,5 @@
 export default {
-    backend: 'http://localhost:8000'
+    backend: 'https://tartl-backend.herokuapp.com'
+    // backend: 'http://localhost:5000'
     
 }

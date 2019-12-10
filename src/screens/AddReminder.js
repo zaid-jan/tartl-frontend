@@ -20,7 +20,7 @@ const AddReminder = (props) => {
     let [uid, setUid] = useState(props.user.id)
     let [description, setdescription] = useState('')
     let [subject, setSubject] = useState('')
-    let [rWhen, setrWhen] = useState(moment)
+    let [rwhen, setrwhen] = useState(moment)
     
     const validateForm = () => {
         return description.length > 0 && subject.length > 0;
@@ -29,10 +29,10 @@ const AddReminder = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(validateForm()){
-            let res = await axios.post(`${env.backend}/addReminder`, {uid, description, subject, rWhen})
+            let res = await axios.post(`${env.backend}/addReminder`, {uid, description, subject, rwhen})
             let data = res.data;
             if(!data.error){
-                props.addReminder({rid:res.data.insertId, uid, description, subject, rWhen}, 'addReminder')
+                props.addReminder({rid:res.data.insertId, uid, description, subject, rwhen}, 'addReminder')
                 history.goBack()
             } else {
                 alert("something went wrong")
@@ -64,11 +64,11 @@ const AddReminder = (props) => {
                 placeholder="Reminder With?"
               />
             </Form.Group>
-            <Form.Group controlId="rWhen" bsSize="large">
+            <Form.Group controlId="rwhen" bsSize="large">
             <DatePicker
                 className="form-control"
-                selected={Date.parse(rWhen)}
-                onChange={(date) => {setrWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
+                selected={Date.parse(rwhen)}
+                onChange={(date) => {setrwhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect
                 dateFormat="Pp"
             />

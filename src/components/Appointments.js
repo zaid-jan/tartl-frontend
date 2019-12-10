@@ -4,8 +4,9 @@ import axios from 'axios'
 import env from '../environment'
 import '../css/box.css'
 import { addAppointment } from '../actions/addAppointment'
-import { FaPlus } from 'react-icons/fa'
-import { useHistory } from "react-router-dom";    
+import { FaPlus, FaClock } from 'react-icons/fa'
+import { useHistory } from "react-router-dom";
+import moment from 'moment'  
 
 const Appointments = (props) => {
     let history = useHistory();
@@ -20,9 +21,10 @@ const Appointments = (props) => {
         return (
             <div key={`a${item.aid}`} className="reminderUnit" onClick={() => {handleNaviagte(item.aid)}}>
                 <div className="list">
-                    {item.subject}
-                </div>                
-                <span className="description">{item.aWith}</span>
+                    <div>{item.subject}</div>                       
+                </div>         
+                <div className="description">with: {item.awith}</div>
+                <div className="time"><FaClock /> {moment(item.awhen).format('LLLL')}</div>   
             </div>
             
         )

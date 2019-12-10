@@ -10,7 +10,7 @@ export default (state=initialState, action) => {
             return state.map(item => {                
                 if(item.rid === action.payload.rid){
                     item.subject = action.payload.subject
-                    item.rWhen = action.payload.rWhen
+                    item.rwhen = action.payload.rwhen
                     item.description = action.payload.description
                 }
                 return item

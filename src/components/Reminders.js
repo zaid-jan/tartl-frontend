@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux';
 import axios from 'axios'
 import { addReminder } from '../actions/addReminder'
-import { FaPlus } from 'react-icons/fa'
+import { FaPlus, FaClock } from 'react-icons/fa'
+import moment from 'moment'
 import { useHistory } from "react-router-dom";
 import env from '../environment'
 
@@ -20,11 +21,11 @@ const Reminders = (props) => {
         return (
             <div key={`r${item.rid}`} className="reminderUnit"  onClick={() => {handleNaviagte(item.rid)}}>
                 <div className="list">
-                    {item.subject}
+                    <div>{item.subject}</div>
                 </div>                
-                <span className="description">{item.description}</span>
-            </div>
-            
+                <div className="description">{item.description}</div>
+                <div className="time"><FaClock /> {moment(item.rwhen).format('LLLL')}</div>  
+            </div>            
         )
     })
     return (

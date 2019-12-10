@@ -11,21 +11,21 @@ import { useParams } from 'react-router-dom'
 const Availability = (props) => {
     const params = useParams()
     const id = params.id
+    const item = findItem(props.otherUsers, 'id', id)
     // console.log(id, params.id, id != params.id, id !== params.id)
-    const [reservedDates, setReservedDates] = useState([]) 
+    const [reservedDates, setReservedDates] = useState([])
     useEffect(() => {       
-        axios.post(`${env.backend}/getOtherUsersDetails`, {id})
+        axios.post(`${env.backend}/getOtherUsersDetails`, {id, username: item.username})
             .then(res => {
                 let temp = []
                 for(let i of res.data){
-                    temp = temp.concat(Date.parse(i.aWhen) || Date.parse(i.rWhen))
+                    temp = temp.concat(Date.parse(i.awhen) || Date.parse(i.rwhen))
                 }
                 setReservedDates(temp)
             })
             .catch(err => console.log(err))        
     }, [id])
     const [startDate, setStartDate] = useState(new Date())
-    const item = findItem(props.otherUsers, 'id', id)
     // console.log("object", item)
     console.log("reservedDates", reservedDates)
     return (

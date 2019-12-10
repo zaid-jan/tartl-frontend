@@ -49,7 +49,7 @@
 	margin-top: 1%;
 	margin-bottom: 1%;
 	border-bottom: 1px solid white;
-	font-size: medium;
+	font-size: 16px;
 }
 
 .description {
@@ -57,7 +57,15 @@
 	margin-right: 5%;
 	margin-top: 1%;
 	margin-bottom: 1%;
-	font-size: small;
+	font-size: 12px;
+}
+
+.time {
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	font-size: 12px;
 }
 
 .reminderUnit{
@@ -66,6 +74,10 @@
 	margin-bottom: 1%;
 	width: 100%;
 	background: rgb(216, 216, 216);
+}
+
+.topIcon {
+	margin-right: 5px;
 }
 
 .contents::-webkit-scrollbar-track {

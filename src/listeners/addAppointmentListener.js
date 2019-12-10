@@ -7,7 +7,7 @@ export const addAppointmentListener = (socket, addAppointment) => {
         socket.on('addAppointment', (data) => {        
             if(!data.error ){
                 console.log("no error from add appointmny", data);
-                addAppointment({aid:data.insertId, uid: data.uid, aWith:data.aWith, subject:data.subject, aWhen:data.aWhen}, 'addAppointment')
+                addAppointment({aid:data.insertId, uid: data.uid, awith:data.awith, subject:data.subject, awhen:data.awhen}, 'addAppointment')
             } else {
                 alert("something went wrong")
             }

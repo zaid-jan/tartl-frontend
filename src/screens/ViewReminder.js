@@ -10,7 +10,7 @@ const ViewReminder = (props) => {
     let history = useHistory()
     const { id } = useParams()  
     const item = findItem(props.data, 'rid', id);
-    const date = convertDbTime(item.rWhen);   
+    const date = convertDbTime(item.rwhen);   
     const handleClick = (e) => {
         e.preventDefault()
         history.push(`/editReminder/${id}`)
