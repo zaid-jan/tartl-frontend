@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import CustomNavbar from '../components/CustomNavbar'
 import { findItem } from '../lib/findItem'
-
+import { Typeahead } from 'react-bootstrap-typeahead'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -23,13 +23,29 @@ const EditAppointment = (props) => {
     let [aWith, setAWith] = useState(item.aWith)
     let [subject, setSubject] = useState(item.subject)
     let [aWhen, setAWhen] = useState(item.aWhen)
-
+    let [isNew, setIsNew] = useState(0)
+    console.log("aWhen", Date.parse(aWhen))
     const handleSubmit = async (e) => {
         e.preventDefault();
         props.socket.emit(`editAppointment`, {aid, uid, aWith, subject, aWhen})
         history.goBack()     
     }
-
+    const handleNew = (input) => {
+      console.log("inpit", input)
+      if(input.length){
+        if(input[0].hasOwnProperty("label")){
+          setIsNew(1)
+          setAWith(input[0].label)
+        } else {
+          setIsNew(0)
+          setAWith(input[0])
+        }
+      } else {
+        setAWith("")
+        setIsNew(0)
+      }
+    }
+    let suggestions = props.otherUsers.map(item => item.username)
     return (
         <div>
             <CustomNavbar />
@@ -45,15 +61,16 @@ const EditAppointment = (props) => {
               />
             </Form.Group>
             <Form.Group controlId="aWith" bsSize="large">
-              <Form.Control
-                value={aWith}
-                onChange={(e) => {setAWith(e.target.value)}}
-                type="aWith"
-                placeholder="Appointment With?"
+            <Typeahead
+                allowNew
+                onChange={input => handleNew(input)}
+                options={suggestions}
+                placeholder={"Set Appointment With"}
               />
             </Form.Group>
             <Form.Group controlId="aWhen" bsSize="large">
             <DatePicker
+                className="form-control"
                 selected={Date.parse(aWhen)}
                 onChange={(date) => {setAWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect

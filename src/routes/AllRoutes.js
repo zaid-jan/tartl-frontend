@@ -11,11 +11,13 @@ import EditReminder from '../screens/EditReminder'
 import EditAppointment from '../screens/EditAppointment'
 import AddAppointment from '../screens/AddAppointment'
 import AddReminder from '../screens/AddReminder'
+import Availability from '../screens/Availabilty'
 import { addSocket } from '../actions/addSocket'
 import { addAppointment } from '../actions/addAppointment'
 import { listenerWrapper } from '../listeners/listenerWrapper'
-
-
+import { addOtherUsers } from '../actions/addOtherUsers'
+import axios from 'axios'
+import env from '../environment'
 
 const AllRoutes = (props) => {
     let loggedIn = props.user.loggedIn
@@ -26,6 +28,12 @@ const AllRoutes = (props) => {
         const socket = io(`http://localhost:8000?id=${props.user.id}`, {transports: ['websocket']});
         listenerWrapper(socket, props.addAppointment)
         props.addSocket(socket, 'setSocket')
+        axios.post(`${env.backend}/getUsers`, {id: props.user.id})
+            .then(res => {
+                props.addOtherUsers(res.data, 'setOtherUsers')
+            })
+            .catch(err => console.log(err))
+        
     }    
     return (
         <Router>
@@ -39,6 +47,7 @@ const AllRoutes = (props) => {
             <Route path="/editAppointment/:id">{!loggedIn ? <Redirect to="/login" /> : <EditAppointment />}</Route> 
             <Route path="/addAppointment">{!loggedIn ? <Redirect to="/login" /> : <AddAppointment />}</Route> 
             <Route path="/addReminder">{!loggedIn ? <Redirect to="/login" /> : <AddReminder />}</Route> 
+            <Route path="/availability/:id">{!loggedIn ? <Redirect to="/login" /> : <Availability />}</Route> 
         </Router>      
     )
 }
@@ -46,8 +55,8 @@ const AllRoutes = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        socket: state.socket
+        socket: state.socket,
     }
 }
 
-export default connect(mapStateToProps, { addSocket, addAppointment })(AllRoutes)
+export default connect(mapStateToProps, { addSocket, addAppointment, addOtherUsers })(AllRoutes)

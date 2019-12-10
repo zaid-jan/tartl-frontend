@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
-import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 import { addAppointment } from '../actions/addAppointment'
 import DatePicker from "react-datepicker";
 import moment from 'moment'
-import env from '../environment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import CustomNavbar from '../components/CustomNavbar'
-import { findItem } from '../lib/findItem'
+import { Typeahead } from 'react-bootstrap-typeahead'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -19,16 +17,42 @@ const AddAppointment = (props) => {
     let [aWith, setAWith] = useState('')
     let [subject, setSubject] = useState('')
     let [aWhen, setAWhen] = useState(moment)
+    let [isNew, setIsNew] = useState(0)
     const validateForm = () => {
         return aWith.length > 0 && subject.length > 0;
     }
+    const handleNew = (input) => {
+      console.log("inpit", input)
+      if(input.length){
+        if(input[0].hasOwnProperty("label")){
+          setIsNew(1)
+          setAWith(input[0].label)
+        } else {
+          setIsNew(0)
+          setAWith(input[0])
+        }
+      } else {
+        setAWith("")
+        setIsNew(0)
+      }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(validateForm()){
-          props.socket.emit('addAppointment',{uid, aWith, subject, aWhen})
+          let auid = "";
+          if(!isNew){
+            auid = props.otherUsers.find(item => item.username === aWith).id
+          }
+          props.socket.emit('addAppointment',{uid, aWith, subject, aWhen, auid})
+          history.goBack();
+        } else {
+          alert("fill all values")
         }
-        history.goBack();
+        
     }
+    let suggestions = props.otherUsers.map(item => item.username)
+    console.log("suggestions", suggestions)
     return (
         <div>
             <CustomNavbar />
@@ -44,15 +68,16 @@ const AddAppointment = (props) => {
               />
             </Form.Group>
             <Form.Group controlId="aWith" bsSize="large">
-              <Form.Control
-                value={aWith}
-                onChange={(e) => {setAWith(e.target.value)}}
-                type="aWith"
-                placeholder="Appointment With?"
+              <Typeahead
+                allowNew
+                onChange={input => handleNew(input)}
+                options={suggestions}
+                placeholder={"Set Appointment With"}
               />
             </Form.Group>
             <Form.Group controlId="aWhen" bsSize="large">
             <DatePicker
+                className="form-control"
                 selected={Date.parse(aWhen)}
                 onChange={(date) => {setAWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect
@@ -76,7 +101,8 @@ const mapStateToProps = (state) => {
     return {
         data: state.appointments,
         user: state.user,
-        socket: state.socket
+        socket: state.socket,
+        otherUsers: state.otherUsers
     }
 }
 

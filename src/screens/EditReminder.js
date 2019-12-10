@@ -54,6 +54,7 @@ const EditReminder = (props) => {
             </Form.Group>
             <Form.Group controlId="rWhen" bsSize="large">
             <DatePicker
+                className="form-control"
                 selected={Date.parse(rWhen)}
                 onChange={(date) => {setrWhen(moment(date).format('YYYY-MM-DD hh:mm:ss'))}}
                 showTimeSelect
